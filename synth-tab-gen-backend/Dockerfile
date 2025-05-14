@@ -2,21 +2,20 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install system dependencies and uv
 RUN apt-get update && apt-get install -y \
     build-essential \
     curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && curl -sSf https://astral.sh/uv/install.sh | sh
+    && rm -rf /var/lib/apt/lists/*
 
-# Add uv to PATH
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc && \
+    . ~/.bashrc
+
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Copy pyproject.toml
 COPY pyproject.toml .
 
-# Use uv to install the project and dependencies
-RUN uv pip install --system -e .
+RUN pip install -e .
 
 COPY . .
 

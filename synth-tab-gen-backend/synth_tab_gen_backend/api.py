@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import torch
 
-from synth_tab_gen_backend.routers import datasets_router, models_router, jobs_router
+from synth_tab_gen_backend.routers import datasets, models, jobs
 
 app = FastAPI(title="SynthTabGen API")
 
@@ -46,9 +46,9 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(datasets_router)
-app.include_router(models_router)
-app.include_router(jobs_router)
+app.include_router(datasets)
+app.include_router(models)
+app.include_router(jobs)
 
 
 @app.get("/")

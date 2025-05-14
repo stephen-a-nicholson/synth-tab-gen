@@ -1,21 +1,25 @@
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install system dependencies for PyTorch
+# Install system dependencies and uv
 RUN apt-get update && apt-get install -y \
     build-essential \
-    && rm -rf /var/lib/apt/lists/*
+    curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sSf https://astral.sh/uv/install.sh | sh
 
-# Install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Add uv to PATH
+ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Copy application code
+# Copy pyproject.toml
+COPY pyproject.toml .
+
+# Use uv to install the project and dependencies
+RUN uv pip install --system -e .
+
 COPY . .
 
-# Expose port
 EXPOSE 8000
 
-# Start application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "synth_tab_gen_backend.api:app", "--host", "0.0.0.0", "--port", "8000"]

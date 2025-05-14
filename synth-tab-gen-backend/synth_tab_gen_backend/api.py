@@ -1,4 +1,3 @@
-# synth_tab_gen_backend/api.py
 """This module defines the FastAPI application and includes the routers"""
 
 from fastapi import FastAPI, Request

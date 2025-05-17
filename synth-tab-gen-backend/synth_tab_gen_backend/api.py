@@ -45,10 +45,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(datasets)
-app.include_router(models)
-app.include_router(jobs)
+app.include_router(datasets.router)
+app.include_router(models.router)
+app.include_router(jobs.router)
 
 
 @app.get("/")

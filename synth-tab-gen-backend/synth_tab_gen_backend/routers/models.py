@@ -1,12 +1,10 @@
 """ Contains endpoints for managing models """
 
 from fastapi import APIRouter, HTTPException, BackgroundTasks
-from fastapi.responses import JSONResponse
 
-from synth_tab_gen_backend.models import ModelConfig, APIResponse, ModelType
+from synth_tab_gen_backend.models import ModelConfig, APIResponse, ModelType, GenerationConfig
 from synth_tab_gen_backend import storage
-from sdv.tabular import CTGAN, TVAE, GaussianCopula
-import torch
+from sdv.single_table import CTGANSynthesizer, TVAESynthesizer, GaussianCopulaSynthesizer
 
 router = APIRouter(prefix="/models", tags=["models"])
 
@@ -24,11 +22,11 @@ async def train_model_task(job_id: str, dataset_id: str, config: ModelConfig):
         
         # Initialize model based on type
         if config.model_type == ModelType.CTGAN:
-            model = CTGAN(epochs=config.epochs, batch_size=config.batch_size, cuda=config.use_gpu)
+            model = CTGANSynthesizer(epochs=config.epochs, batch_size=config.batch_size, cuda=config.use_gpu)
         elif config.model_type == ModelType.TVAE:
-            model = TVAE(epochs=config.epochs, batch_size=config.batch_size, cuda=config.use_gpu)
+            model = TVAESynthesizer(epochs=config.epochs, batch_size=config.batch_size, cuda=config.use_gpu)
         else:
-            model = GaussianCopula()
+            model = GaussianCopulaSynthesizer()
         
         # Train model
         model.fit(df)

@@ -4,9 +4,8 @@ from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 import pandas as pd
 from io import StringIO
-import csv
 
-from synth_tab_gen_backend.models import APIResponse, DatasetInfo
+from synth_tab_gen_backend.models import APIResponse
 from synth_tab_gen_backend import storage
 
 router = APIRouter(prefix="/datasets", tags=["datasets"])

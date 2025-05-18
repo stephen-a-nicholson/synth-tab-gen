@@ -7,12 +7,14 @@ from pydantic import BaseModel
 
 
 class ModelType(str, Enum):
+    """Enumeration of the model types supported by SynthTabGen."""
     CTGAN = "CTGAN"
     TVAE = "TVAE"
     GAUSSIAN_COPULA = "GaussianCopula"
 
 
 class OutputFormat(str, Enum):
+    """Enumeration of the output formats supported by SynthTabGen."""
     CSV = "csv"
     JSON = "json"
     PARQUET = "parquet"
@@ -20,6 +22,7 @@ class OutputFormat(str, Enum):
 
 
 class JobStatus(str, Enum):
+    """Enumeration of the job statuses supported by SynthTabGen."""
     QUEUED = "queued"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -27,6 +30,7 @@ class JobStatus(str, Enum):
 
 
 class ModelConfig(BaseModel):
+    """Configuration for the model training."""
     model_type: ModelType
     epochs: int = 100
     batch_size: int = 500
@@ -34,6 +38,7 @@ class ModelConfig(BaseModel):
 
 
 class GenerationConfig(BaseModel):
+    """Configuration for the data generation."""
     num_rows: int
     include_quality_metrics: bool = True
     output_format: OutputFormat = OutputFormat.CSV
@@ -43,6 +48,7 @@ class GenerationConfig(BaseModel):
 
 
 class DatasetInfo(BaseModel):
+    """Information about the dataset."""
     dataset_id: str
     filename: str
     columns: List[str]
@@ -51,6 +57,7 @@ class DatasetInfo(BaseModel):
 
 
 class ModelInfo(BaseModel):
+    """Information about the model."""
     model_id: str
     model_type: ModelType
     dataset_id: str
@@ -59,6 +66,7 @@ class ModelInfo(BaseModel):
 
 
 class Job(BaseModel):
+    """Information about a job."""
     job_id: str
     status: JobStatus
     progress: float = 0
@@ -69,6 +77,7 @@ class Job(BaseModel):
 
 
 class APIResponse(BaseModel):
+    """Standard API response format."""
     success: bool
     message: str
     data: Optional[Dict[str, Any]] = None

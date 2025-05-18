@@ -82,7 +82,7 @@ def list_datasets():
     """List all available datasets"""
     dataset_list = []
 
-    for dataset_id, dataset in storage.datasets.items():
+    for _, dataset in storage.datasets.items():
         dataset_list.append(
             {
                 "dataset_id": dataset["dataset_id"],

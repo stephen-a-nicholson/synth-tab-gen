@@ -1,10 +1,9 @@
 """This module defines the FastAPI application and includes the routers"""
 
+import torch
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-import torch
-
-from synth_tab_gen_backend.routers import datasets, models, jobs
+from synth_tab_gen_backend.routers import datasets, jobs, models
 
 app = FastAPI(title="SynthTabGen API")
 
@@ -57,5 +56,9 @@ def read_root():
         "name": "SynthTabGen API",
         "version": "1.0.0",
         "gpu_available": torch.cuda.is_available(),
-        "gpu_name": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None
+        "gpu_name": (
+            torch.cuda.get_device_name(0)
+            if torch.cuda.is_available()
+            else None
+        ),
     }
